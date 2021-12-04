@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "redis.host",
+      "type": "java.lang.String",
+      "description": "Хост REDIS."
+    },
+    {
+      "name": "redis.port",
+      "type": "java.lang.Integer",
+      "description": "Порт."
+    }
+  ]
+}
