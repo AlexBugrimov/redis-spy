@@ -13,11 +13,11 @@ public class SpyService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public void put(String key, Object data) {
-        redisTemplate.opsForList().leftPush(key, data);
+    public Long put(String key, Object data) {
+        return redisTemplate.opsForList().leftPush(key, data);
     }
 
-    public Long clear() {
+    public Long clearStore() {
         Set<String> keys = getKeys();
         if (Objects.nonNull(keys) && keys.size() > 0) {
             return redisTemplate.delete(keys);
@@ -25,13 +25,17 @@ public class SpyService {
         return 0L;
     }
 
-    public Page<Object> getAll(int page, int pageSize) {
+    public Page<Object> getAllByPage(int page, int pageSize) {
         Set<String> keys = getKeys();
+        if (keys.isEmpty()) {
+            return Page.empty();
+        }
         Set<Object> objects = redisTemplate.opsForSet().union(keys);
         if (Objects.isNull(objects) || objects.isEmpty()) {
-            return Page.builder().build();
+            return Page.empty();
         }
-        return PartitionMapper.toPage(objects, page, pageSize);
+        return Page.toPage(objects, page, pageSize);
+
     }
 
     private Set<String> getKeys() {
