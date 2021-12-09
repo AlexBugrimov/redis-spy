@@ -33,6 +33,7 @@
        th:each="pageNumber : ${pageNumbers}">
     <a th:href="@{/items(page=${pageNumber}, pageSize=${size})}"
        th:text="${pageNumber}" th:class="${pageNumber==number + 1} ? active"></a>
+  </div>
 </div>
 </body>
 </html>
