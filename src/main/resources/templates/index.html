@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Redis Spy</title>
+  <style>
+      table {
+          border: 1px solid #000;
+      }
+  </style>
+</head>
+<body>
+<div>
+  <fieldset>
+    <legend>База данных</legend>
+    <form action="#" th:action="@{'/'}" th:method="post">
+      <button type="submit" name="action" value="clear">Очистить</button>
+      <button type="submit" name="action" value="initialize">Создать +20 записей</button>
+    </form>
+  </fieldset>
+  <table>
+    <tr th:each="security, state: ${securities}">
+      <td th:utext="${security.key}"></td>
+      <td th:utext="${security.createdAt}"></td>
+      <td th:utext="${security.accessToken}"></td>
+      <td th:utext="${security.refreshToken}"></td>
+      <td th:utext="${security.jti}"></td>
+      <td th:utext="${security.expires}"></td>
+      <td th:utext="${security.scope}"></td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
