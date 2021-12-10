@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Redis Spy</title>
+<!--  <link rel="stylesheet" th:href="@{/webjars/}">-->
   <style>
       table {
           border: 1px solid #000;
@@ -29,10 +30,10 @@
       <td th:utext="${security.scope}"></td>
     </tr>
   </table>
-  <div th:if="${totalPages > 0}"
+  <div th:if="${totalPages > 1}"
        th:each="pageNumber : ${pageNumbers}">
     <a th:href="@{/items(page=${pageNumber}, pageSize=${size})}"
-       th:text="${pageNumber}" th:class="${pageNumber==number + 1} ? active"></a>
+       th:text="${pageNumber + 1}" th:class="${pageNumber==number + 1} ? active"></a>
   </div>
 </div>
 </body>

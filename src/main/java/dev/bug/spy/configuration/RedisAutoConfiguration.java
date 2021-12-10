@@ -17,7 +17,7 @@ public class RedisAutoConfiguration {
     @Bean
     public ApplicationRunner applicationRunner() {
         return titleRunner("Initialize database", args -> {
-            redisSpyService.initializeDatabase();
+            redisSpyService.createDataFrom(20);
         });
     }
 

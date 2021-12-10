@@ -46,7 +46,7 @@ public class SecurityDataController {
             spyService.clearDatabase();
         }
         if (action.equals("initialize")) {
-            spyService.initializeDatabase();
+            spyService.createDataFrom(20);
             return String.format("redirect:/items?page=%s&pageSize=%s", PAGE_DEFAULT, PAGE_SIZE_DEFAULT);
         }
         return "redirect:/items";
