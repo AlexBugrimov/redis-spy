@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Redis Spy</title>
-<!--  <link rel="stylesheet" th:href="@{/webjars/}">-->
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
   <style>
       table {
           border: 1px solid #000;
@@ -11,30 +11,49 @@
   </style>
 </head>
 <body>
-<div>
-  <fieldset>
-    <legend>База данных</legend>
-    <form action="#" th:action="@{'/'}" th:method="post">
-      <button type="submit" name="action" value="clear">Очистить</button>
-      <button type="submit" name="action" value="initialize">Создать +20 записей</button>
-    </form>
-  </fieldset>
-  <table>
-    <tr th:each="security, state: ${securities}">
-      <td th:utext="${security.key}"></td>
-      <td th:utext="${security.createdAt}"></td>
-      <td th:utext="${security.accessToken}"></td>
-      <td th:utext="${security.refreshToken}"></td>
-      <td th:utext="${security.jti}"></td>
-      <td th:utext="${security.expires}"></td>
-      <td th:utext="${security.scope}"></td>
-    </tr>
-  </table>
-  <div th:if="${totalPages > 1}"
-       th:each="pageNumber : ${pageNumbers}">
-    <a th:href="@{/items(page=${pageNumber}, pageSize=${size})}"
-       th:text="${pageNumber + 1}" th:class="${pageNumber==number + 1} ? active"></a>
+<div class="container">
+  <h1 class="pt-4 pb-4">База данных REDIS</h1>
+  <form action="#" th:action="@{'/'}" th:method="post">
+    <div class="btn-toolbar mb-3" role="toolbar">
+      <div class="input-group w-25 me-2">
+        <input type="number" class="form-control" placeholder="Количество записей">
+        <button class="btn btn-info" type="submit" name="action" value="initialize">Создать</button>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="submit" name="action" value="clear" class="btn btn-danger">Очистить</button>
+      </div>
+    </div>
+
+  </form>
+  <div class="card border-dark mb-3" th:each="security, state: ${securities}">
+    <div class="card-header"><strong>KEY: </strong><label th:text="${security.key}"></label></div>
+    <div class="card-body text-dark">
+      <p class="card-text"><strong>Scope: </strong><label th:text="${security.scope}"></label></p>
+      <p class="card-text"><strong>Jit: </strong><label th:text="${security.jti}"></label></p>
+      [
+      <div th:each="decoded, state: ${security.getDecodedList()}">
+        <p class="card-text"><strong>Client_Id: </strong><label th:text="${decoded.clientId}"></label></p>
+        <p class="card-text"><strong>Phone: </strong><label th:text="${decoded.phone}"></label></p>
+        <p class="card-text"><strong>Jti: </strong><label th:text="${decoded.jti}"></label></p>
+        <p class="card-text"><strong>Created_At: </strong><label th:text="${decoded.createdAt}"></label></p>
+        <p class="card-text"><strong>Login: </strong><label th:text="${decoded.login}"></label></p>
+      </div>
+      ]
+      <p class="card-text"><strong>Access_token: </strong><label th:text="${security.accessToken}"></label></p>
+      <p class="card-text"><strong>Refresh_token: </strong><label th:text="${security.refreshToken}"></label></p>
+      <p class="card-text"><strong>Expires: </strong><label th:text="${security.expires}"></label></p>
+      <p class="card-text"><strong>Created_At: </strong><label th:text="${security.createdAt}"></label></p>
+    </div>
   </div>
-</div>
+  <div>
+    <div th:if="${totalPages > 1}"
+         th:each="pageNumber : ${pageNumbers}">
+      <a th:href="@{/items(page=${pageNumber}, pageSize=${size})}"
+         th:text="${pageNumber + 1}" th:class="${pageNumber==number + 1} ? active"></a>
+    </div>
+  </div>
+  <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+  <script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
 </body>
 </html>

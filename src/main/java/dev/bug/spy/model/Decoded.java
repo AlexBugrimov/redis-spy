@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Builder
 @NoArgsConstructor
-@RedisHash("Decoded")
 public class Decoded implements Serializable {
 
     @Indexed

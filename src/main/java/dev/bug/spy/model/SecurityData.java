@@ -3,7 +3,6 @@ package dev.bug.spy.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Reference;
-import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,7 +15,6 @@ import java.util.List;
 @Setter
 @Builder
 @NoArgsConstructor
-@RedisHash("Security")
 public class SecurityData implements Serializable {
 
     @Id
@@ -33,7 +31,7 @@ public class SecurityData implements Serializable {
     private String jti;
 
     @Reference
-    private List<Decoded> decodedList;
+    private List<Decoded> decoded;
 
     private String accessToken;
 
