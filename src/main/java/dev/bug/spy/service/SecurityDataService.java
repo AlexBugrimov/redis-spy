@@ -8,11 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.LongStream;
 
 @Service
 public record SecurityDataService(RecordRepository<SecurityData, String> repository,
-                                  SecurityDataFactory securityDataProvider) {
+                                  SecurityDataFactory dataFactory) {
 
     public long deleteAllRecords() {
         return repository.deleteAll();
@@ -29,7 +30,7 @@ public record SecurityDataService(RecordRepository<SecurityData, String> reposit
 
     public long createRecordsFrom(long count) {
         return LongStream.rangeClosed(1, count)
-                .mapToObj(securityDataProvider::create)
+                .mapToObj(dataFactory::create)
                 .map(repository::save)
                 .count();
     }

@@ -1,4 +1,4 @@
-package dev.bug.spy.web;
+package dev.bug.spy.web.controller;
 
 import dev.bug.spy.model.SecurityData;
 import dev.bug.spy.service.SecurityDataService;
@@ -17,7 +17,7 @@ public record RecordsController(SecurityDataService dataService) {
                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         Page<SecurityData> securityDataPage = dataService.findAll(Pageable.ofSize(pageSize).withPage(page));
-        return "index";
+        return "records";
     }
 
     @GetMapping("/{id}")

@@ -1,4 +1,4 @@
-package dev.bug.spy;
+package dev.bug.spy.configuration;
 
 import dev.bug.spy.model.SecurityData;
 import org.springframework.context.annotation.Bean;

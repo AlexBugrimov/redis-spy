@@ -12,7 +12,7 @@ import java.util.Objects;
 @Repository
 public class SecurityDataRepository implements RecordRepository<SecurityData, String> {
 
-    private static final String KEY = "Session";
+    private static final java.lang.String KEY = "Session";
     private final RedisTemplate<String, SecurityData> template;
 
     public SecurityDataRepository(RedisTemplate<String, SecurityData> template) {
