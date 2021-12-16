@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Error - Spy Redis</title>
+</head>
+<body>
+<div th:switch="${code}">
+  <img th:case="400" src="../static/images/400_error_bad_request.png" th:src="@{images/400_error_bad_request.png}"
+       class="img-fluid" th:alt="${code}" alt="">
+  <img th:case="404" src="../static/images/404_error_not_found.png" th:src="@{images/404_error_not_found.png}"
+       class="img-fluid" th:alt="${code}" alt="">
+  <img th:case="*" src="../static/images/500_internal_server_error.png" th:src="@{images/500_internal_server_error.png}"
+       class="img-fluid" th:alt="${code}" alt="">
+</div>
+</body>
+</html>

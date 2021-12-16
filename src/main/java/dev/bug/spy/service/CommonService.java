@@ -11,11 +11,13 @@ import java.util.Objects;
 @Service
 public record CommonService(RedisTemplate<String, SecurityData> redis) {
 
+    private static final String SUCCESSFUL_ANSWER = "PONG";
+
     public boolean isUp() {
         RedisConnectionFactory connectionFactory = redis.getConnectionFactory();
         if (Objects.nonNull(connectionFactory)) {
             try (RedisConnection connection = connectionFactory.getConnection()) {
-                return Objects.equals(connection.ping(), "PONG");
+                return Objects.equals(connection.ping(), SUCCESSFUL_ANSWER);
             }
         }
         return false;
