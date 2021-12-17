@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Error - Spy Redis</title>
+  <title>Error [[${code}]] - Spy Redis</title>
+  <link th:href="@{styles/main.css}" rel="stylesheet"/>
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
 </head>
 <body>
-<div th:switch="${code}">
-  <img th:case="400" src="../static/images/400_error_bad_request.png" th:src="@{images/400_error_bad_request.png}"
-       class="img-fluid" th:alt="${code}" alt="">
-  <img th:case="404" src="../static/images/404_error_not_found.png" th:src="@{images/404_error_not_found.png}"
-       class="img-fluid" th:alt="${code}" alt="">
-  <img th:case="*" src="../static/images/500_internal_server_error.png" th:src="@{images/500_internal_server_error.png}"
-       class="img-fluid" th:alt="${code}" alt="">
+<div class="container">
+  <div class="row">
+    <div th:switch="${code}">
+      <div th:case="400" class="error-image" th:style="'background-image:url(/images/400_error_bad_request.png);'"></div>
+      <div th:case="404" class="error-image" th:style="'background-image:url(/images/404_error_not_found.png);'"></div>
+      <div th:case="*" class="error-image" th:style="'background-image:url(/images/500_internal_server_error.png);'"></div>
+    </div>
+  </div>
 </div>
 </body>
 </html>

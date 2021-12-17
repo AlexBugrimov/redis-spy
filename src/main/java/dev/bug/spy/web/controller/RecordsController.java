@@ -7,17 +7,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/records")
 public record RecordsController(SecurityDataService dataService) {
 
     @GetMapping
-    public String getAllRecords(Model model,
-                                @RequestParam(value = "page", defaultValue = "0") int page,
-                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+    public ModelAndView getAllRecords(@RequestParam(value = "page", defaultValue = "0") int page,
+                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         Page<SecurityData> securityDataPage = dataService.findAll(Pageable.ofSize(pageSize).withPage(page));
-        return "records";
+        return new ModelAndView("records");
     }
 
     @GetMapping("/{id}")
