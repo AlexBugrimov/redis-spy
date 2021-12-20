@@ -1,5 +1,9 @@
 package dev.bug.spy.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Reference;
@@ -15,6 +19,7 @@ import java.util.List;
 @Setter
 @Builder
 @NoArgsConstructor
+@ToString
 public class SecurityData implements Serializable {
 
     @Id
@@ -25,6 +30,8 @@ public class SecurityData implements Serializable {
 
     private String scope;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime createdAt;
 

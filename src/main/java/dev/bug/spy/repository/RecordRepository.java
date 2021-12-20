@@ -4,11 +4,9 @@ import java.util.List;
 
 public interface RecordRepository<R, ID> {
 
-    boolean save(R value);
+    void save(R value);
 
-    long deleteAll();
+    void deleteAll();
 
     List<R> findAll();
-
-    R findById(ID id);
 }

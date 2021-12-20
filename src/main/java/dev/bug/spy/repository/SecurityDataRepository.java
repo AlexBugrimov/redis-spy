@@ -2,11 +2,13 @@ package dev.bug.spy.repository;
 
 import dev.bug.spy.model.SecurityData;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Slf4j
 @Repository
@@ -20,21 +22,23 @@ public class SecurityDataRepository implements RecordRepository<SecurityData, St
     }
 
     @Override
-    public boolean save(SecurityData securityData) {
+    public void save(SecurityData securityData) {
         try {
             template.opsForHash().put(KEY, securityData.getKey(), securityData);
             log.info("Create security data: {}", securityData);
-            return true;
         } catch (Exception ex) {
             log.error("Failed to create security data", ex);
-            return false;
         }
     }
 
     @Override
-    public long deleteAll() {
+    public void deleteAll() {
         log.info("Delete all records");
-        return template.opsForHash().delete(KEY);
+        Set<String> keys = template.keys("*");
+        if (CollectionUtils.isNotEmpty(keys)) {
+            Long deletedCount = template.delete(keys);
+            log.info("Deleted {} keys", deletedCount);
+        }
     }
 
     @Override
@@ -44,11 +48,5 @@ public class SecurityDataRepository implements RecordRepository<SecurityData, St
                 .filter(Objects::nonNull)
                 .map(SecurityData.class::cast)
                 .toList();
-    }
-
-    @Override
-    public SecurityData findById(String id) {
-        log.info("Find record by id: {}", id);
-        return (SecurityData) template.opsForHash().get(KEY, id);
     }
 }

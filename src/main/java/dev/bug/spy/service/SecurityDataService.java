@@ -8,30 +8,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.LongStream;
 
 @Service
 public record SecurityDataService(RecordRepository<SecurityData, String> repository,
                                   SecurityDataFactory dataFactory) {
 
-    public long deleteAllRecords() {
-        return repository.deleteAll();
+    public void deleteAllRecords() {
+        repository.deleteAll();
+    }
+
+    public void createRecordsFrom(long count) {
+        LongStream.rangeClosed(1, count)
+                .mapToObj(dataFactory::create)
+                .forEach(repository::save);
     }
 
     public Page<SecurityData> findAll(Pageable pageable) {
         List<SecurityData> allRecords = repository.findAll();
         return new PageImpl<>(allRecords, pageable, allRecords.size());
-    }
-
-    public SecurityData findById(String id) {
-        return repository.findById(id);
-    }
-
-    public long createRecordsFrom(long count) {
-        return LongStream.rangeClosed(1, count)
-                .mapToObj(dataFactory::create)
-                .map(repository::save)
-                .count();
     }
 }
