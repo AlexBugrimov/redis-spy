@@ -49,10 +49,11 @@ public class SecurityDataRepository implements RecordRepository<SecurityData, St
 
     @Override
     public List<SecurityData> findAll() {
-        log.info("Find all records");
-        return template.opsForHash().values(KEY).stream()
+        List<SecurityData> records = template.opsForHash().values(KEY).stream()
                 .filter(Objects::nonNull)
                 .map(SecurityData.class::cast)
                 .toList();
+        log.info("Get all records: {}", records);
+        return records;
     }
 }

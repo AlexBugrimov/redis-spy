@@ -72,10 +72,26 @@
         <div th:id="${'collapse' + record.key}" class="accordion-collapse collapse"
              th:aria-labelledby="${'heading' + record.key}" data-bs-parent="#accordionRecords">
           <div class="accordion-body">
-            <div th:text="${record.accessToken}"></div>
-            <div th:text="${record.refreshToken}"></div>
-            <div th:text="${record.jti}"></div>
-            <div th:text="${record.createdAt}"></div>
+            <div>
+              <strong class="text-success">Access_Token</strong>
+              <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+              <label th:text="${record.accessToken}"></label>
+            </div>
+            <div>
+              <strong class="text-success">Refresh_Token</strong>
+              <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+              <label th:text="${record.refreshToken}"></label>
+            </div>
+            <div>
+              <strong class="text-success">Jti</strong>
+              <span class="text-black-50">&nbsp;( INTEGER ):&nbsp;</span>
+              <label th:text="${record.jti}"></label>
+            </div>
+            <div>
+              <strong class="text-success">Created_At</strong>
+              <span class="text-black-50">&nbsp;( DATE_TIME ):&nbsp;</span>
+              <label th:text="${record.createdAt}"></label>
+            </div>
             <div th:text="${record.scope}"></div>
             <div th:text="${record.expires}"></div>
             <div th:each="decoded: ${record.decoded}">
