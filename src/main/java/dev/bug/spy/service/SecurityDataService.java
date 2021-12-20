@@ -19,9 +19,8 @@ public record SecurityDataService(RecordRepository<SecurityData, String> reposit
     }
 
     public void createRecordsFrom(long count) {
-        LongStream.rangeClosed(1, count)
-                .mapToObj(dataFactory::create)
-                .forEach(repository::save);
+        repository.saveAll(LongStream.rangeClosed(1, count)
+                .mapToObj(dataFactory::create).toList());
     }
 
     public Page<SecurityData> findAll(Pageable pageable) {

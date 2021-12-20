@@ -59,32 +59,43 @@
     </div>
   </nav>
   <div class="container">
-    <div th:each="record: ${records}">
-      <div><label>Key:&nbsp;</label>
-        <div th:text="${record.key}"></div>
-      </div>
-      <div th:text="${record.accessToken}"></div>
-      <div th:text="${record.refreshToken}"></div>
-      <div th:text="${record.jti}"></div>
-      <div th:text="${record.createdAt}"></div>
-      <div th:text="${record.scope}"></div>
-      <div th:text="${record.expires}"></div>
-      <div th:each="decoded: ${record.decoded}">
-        <div th:text="${decoded.login}"></div>
-        <div th:text="${decoded.userId}"></div>
-        <div th:text="${decoded.username}"></div>
-        <div th:text="${decoded.phone}"></div>
-        <div th:text="${decoded.createdAt}"></div>
-        <div th:text="${decoded.clientId}"></div>
-        <div th:text="${decoded.jti}"></div>
-        <div th:each="authority : ${decoded.authorities}">
-          <div th:text="${authority}"></div>
+    <div class="accordion" id="accordionRecords" th:each="record: ${records}">
+      <div class="accordion-item">
+        <h2 class="accordion-header" th:id="${'heading' + record.key}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  th:data-bs-target="${'#collapse' + record.key}" aria-expanded="false"
+                  th:aria-controls="${'collapse' + record.key}">
+            <strong>Key:&nbsp;</strong>
+            <div th:text="${record.key}"></div>
+          </button>
+        </h2>
+        <div th:id="${'collapse' + record.key}" class="accordion-collapse collapse"
+             th:aria-labelledby="${'heading' + record.key}" data-bs-parent="#accordionRecords">
+          <div class="accordion-body">
+            <div th:text="${record.accessToken}"></div>
+            <div th:text="${record.refreshToken}"></div>
+            <div th:text="${record.jti}"></div>
+            <div th:text="${record.createdAt}"></div>
+            <div th:text="${record.scope}"></div>
+            <div th:text="${record.expires}"></div>
+            <div th:each="decoded: ${record.decoded}">
+              <div th:text="${decoded.login}"></div>
+              <div th:text="${decoded.userId}"></div>
+              <div th:text="${decoded.username}"></div>
+              <div th:text="${decoded.phone}"></div>
+              <div th:text="${decoded.createdAt}"></div>
+              <div th:text="${decoded.clientId}"></div>
+              <div th:text="${decoded.jti}"></div>
+              <div th:each="authority : ${decoded.authorities}">
+                <div th:text="${authority}"></div>
+              </div>
+              <div th:each="scope : ${decoded.scopes}">
+                <div th:text="${scope}"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div th:each="scope : ${decoded.scopes}">
-          <div th:text="${scope}"></div>
-        </div>
       </div>
-      <hr>
     </div>
     <div th:if="${#lists.isEmpty(records)}" class="row pt-4">
       <h1 class="display-2 text-black-50 text-center">БД не содержит записей =(</h1>

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Repository
@@ -22,10 +24,14 @@ public class SecurityDataRepository implements RecordRepository<SecurityData, St
     }
 
     @Override
-    public void save(SecurityData securityData) {
+    public void saveAll(List<SecurityData> records) {
         try {
-            template.opsForHash().put(KEY, securityData.getKey(), securityData);
-            log.info("Create security data: {}", securityData);
+            template.opsForHash().putAll(
+                    KEY,
+                    records.stream()
+                            .collect(Collectors.toMap(SecurityData::getKey, Function.identity()))
+            );
+            log.info("Create records: {}", records);
         } catch (Exception ex) {
             log.error("Failed to create security data", ex);
         }
@@ -36,8 +42,8 @@ public class SecurityDataRepository implements RecordRepository<SecurityData, St
         log.info("Delete all records");
         Set<String> keys = template.keys("*");
         if (CollectionUtils.isNotEmpty(keys)) {
-            Long deletedCount = template.delete(keys);
-            log.info("Deleted {} keys", deletedCount);
+            Long keyCount = template.delete(keys);
+            log.info("Deleted {} keys", keyCount);
         }
     }
 

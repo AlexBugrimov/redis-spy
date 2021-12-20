@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface RecordRepository<R, ID> {
 
-    void save(R value);
+    void saveAll(List<R> value);
 
     void deleteAll();
 
