@@ -26,8 +26,7 @@ public class SecurityDataRepository implements RecordRepository<SecurityData, St
     @Override
     public void saveAll(List<SecurityData> records) {
         try {
-            template.opsForHash().putAll(
-                    KEY,
+            template.opsForValue().multiSet(
                     records.stream()
                             .collect(Collectors.toMap(SecurityData::getKey, Function.identity()))
             );
@@ -49,11 +48,13 @@ public class SecurityDataRepository implements RecordRepository<SecurityData, St
 
     @Override
     public List<SecurityData> findAll() {
-        List<SecurityData> records = template.opsForHash().values(KEY).stream()
-                .filter(Objects::nonNull)
-                .map(SecurityData.class::cast)
-                .toList();
-        log.info("Get all records: {}", records);
-        return records;
+        Set<String> keys = template.keys("*");
+        if (CollectionUtils.isNotEmpty(keys)) {
+            List<SecurityData> records = template.opsForValue().multiGet(keys);
+            log.info("Get all records: {}", records);
+            return records;
+        }
+        log.info("Database is empty");
+        return List.of();
     }
 }

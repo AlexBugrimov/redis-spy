@@ -6,14 +6,17 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Component
 public class SecurityDataFactory {
 
+    private final Random random = new Random();
+
     public SecurityData create(long id) {
         return SecurityData.builder()
-                .key(Long.toString(id))
+                .key("%s_%s".formatted(random.nextLong(id), UUID.randomUUID()))
                 .tokenType("Bearer")
                 .scope("read, write, create, delete")
                 .jti("Jti")

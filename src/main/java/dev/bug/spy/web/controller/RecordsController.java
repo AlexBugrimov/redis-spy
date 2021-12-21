@@ -2,7 +2,9 @@ package dev.bug.spy.web.controller;
 
 import dev.bug.spy.model.SecurityData;
 import dev.bug.spy.service.SecurityDataService;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +23,14 @@ public record RecordsController(SecurityDataService dataService) {
     @GetMapping
     public ModelAndView getAllRecords(@RequestParam(value = "page", defaultValue = "0") int page,
                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        Page<SecurityData> securityDataPage = dataService.findAll(Pageable.ofSize(pageSize).withPage(page));
+        PagedListHolder<SecurityData> securityDataPage = dataService.findAll(PageRequest.of(page, pageSize));
         return new ModelAndView("records")
-                .addObject("records", securityDataPage.getContent())
-                .addObject("counts", COUNT_CREATED_RECORDS);
+                .addObject("records", securityDataPage.getPageList())
+                .addObject("counts", COUNT_CREATED_RECORDS)
+                .addObject("totalPages", new int[securityDataPage.getPageCount()])
+                .addObject("totalElements", securityDataPage.getNrOfElements())
+                .addObject("currentPage", page)
+                .addObject("pageSize", pageSize);
     }
 
     @GetMapping("/create")
