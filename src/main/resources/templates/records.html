@@ -92,22 +92,80 @@
               <span class="text-black-50">&nbsp;( DATE_TIME ):&nbsp;</span>
               <label th:text="${record.createdAt}"></label>
             </div>
-            <div th:text="${record.scope}"></div>
-            <div th:text="${record.expires}"></div>
-            <div th:each="decoded: ${record.decoded}">
-              <div th:text="${decoded.login}"></div>
-              <div th:text="${decoded.userId}"></div>
-              <div th:text="${decoded.username}"></div>
-              <div th:text="${decoded.phone}"></div>
-              <div th:text="${decoded.createdAt}"></div>
-              <div th:text="${decoded.clientId}"></div>
-              <div th:text="${decoded.jti}"></div>
-              <div th:each="authority : ${decoded.authorities}">
-                <div th:text="${authority}"></div>
-              </div>
-              <div th:each="scope : ${decoded.scopes}">
-                <div th:text="${scope}"></div>
-              </div>
+            <div>
+              <strong class="text-success">Scope</strong>
+              <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+              <label th:text="${record.scope}"></label>
+            </div>
+            <div>
+              <strong class="text-success">Expires</strong>
+              <span class="text-black-50">&nbsp;( INTEGER ):&nbsp;</span>
+              <label th:text="${record.expires}"></label>
+            </div>
+            <div>
+              <strong class="text-success">Decoded</strong>
+              <span class="text-black-50">&nbsp;( ARRAY ):&nbsp;</span>[
+              <span class="ps-3" th:each="decoded, idx: ${record.decoded}">
+                <div>{</div>
+                <div class="ps-3">
+                  <strong class="text-danger">Login</strong>
+                  <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+                  <label th:text="${decoded.login}"></label>
+                </div>
+                <div class="ps-3">
+                  <strong class="text-danger">User_Id</strong>
+                  <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+                  <label th:text="${decoded.userId}"></label>
+                </div>
+                <div class="ps-3">
+                  <strong class="text-danger">Username</strong>
+                  <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+                  <label th:text="${decoded.username}"></label>
+                </div>
+                <div class="ps-3">
+                  <strong class="text-danger">Phone</strong>
+                  <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+                  <label th:text="${decoded.phone}"></label>
+                </div>
+                <div class="ps-3">
+                  <strong class="text-danger">Client_Id</strong>
+                  <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+                  <label th:text="${decoded.clientId}"></label>
+                </div>
+                <div class="ps-3">
+                  <strong class="text-danger">Created_At</strong>
+                  <span class="text-black-50">&nbsp;( DATE_TIME ):&nbsp;</span>
+                  <label th:text="${decoded.createdAt}"></label>
+                </div>
+                <div class="ps-3">
+                  <strong class="text-danger">Jti</strong>
+                  <span class="text-black-50">&nbsp;( INTEGER ):&nbsp;</span>
+                  <label th:text="${decoded.jti}"></label>
+                </div>
+                <div class="ps-3">
+                  <strong class="text-danger">Authorities</strong>
+                  <span class="text-black-50">&nbsp;( ARRAY ):&nbsp;</span>
+                  <span>[</span>
+                  <div th:each="authority, idx : ${decoded.authorities}">
+                    <span class="ps-3" th:text="${'- ' + authority}"></span>
+                    <span th:if="${idx.last}" th:text="${']'}"></span>
+                    <span th:if="${!idx.last}" th:text="${','}"></span>
+                  </div>
+                </div>
+                <div class="ps-3">
+                  <strong class="text-danger">Scopes</strong>
+                  <span class="text-black-50">&nbsp;( ARRAY ):&nbsp;</span>
+                  <span>[</span>
+                  <div th:each="scope, idx : ${decoded.scopes}">
+                    <span class="ps-3" th:text="${'- ' + scope}"></span>
+                    <span th:if="${idx.last}" th:text="${']'}"></span>
+                    <span th:if="${!idx.last}" th:text="${','}"></span>
+                  </div>
+                </div>
+                <span>}</span>
+              <span th:if="${idx.last}" th:text="${']'}"></span>
+              <span th:if="${!idx.last}" th:text="${','}"></span>
+              </span>
             </div>
           </div>
         </div>
