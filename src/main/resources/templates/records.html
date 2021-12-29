@@ -59,7 +59,7 @@
     </div>
   </nav>
   <div class="container">
-    <div class="accordion" id="accordionRecords" >
+    <div class="accordion" id="accordionRecords">
       <div class="accordion-item" th:each="record: ${records}">
         <h2 class="accordion-header" th:id="${'heading' + record.key}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -69,43 +69,45 @@
             <div th:text="${record.key}"></div>
           </button>
         </h2>
-        <div th:id="${'collapse' + record.key}" class="accordion-collapse collapse"
-             th:aria-labelledby="${'heading' + record.key}" data-bs-parent="#accordionRecords">
-          <div class="accordion-body">
-            <div>
-              <strong class="text-success">Access_Token</strong>
-              <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
-              <label th:text="${record.accessToken}"></label>
-            </div>
-            <div>
-              <strong class="text-success">Refresh_Token</strong>
-              <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
-              <label th:text="${record.refreshToken}"></label>
-            </div>
-            <div>
-              <strong class="text-success">Jti</strong>
-              <span class="text-black-50">&nbsp;( INTEGER ):&nbsp;</span>
-              <label th:text="${record.jti}"></label>
-            </div>
-            <div>
-              <strong class="text-success">Created_At</strong>
-              <span class="text-black-50">&nbsp;( DATE_TIME ):&nbsp;</span>
-              <label th:text="${record.createdAt}"></label>
-            </div>
-            <div>
-              <strong class="text-success">Scope</strong>
-              <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
-              <label th:text="${record.scope}"></label>
-            </div>
-            <div>
-              <strong class="text-success">Expires</strong>
-              <span class="text-black-50">&nbsp;( INTEGER ):&nbsp;</span>
-              <label th:text="${record.expires}"></label>
-            </div>
-            <div>
-              <strong class="text-success">Decoded</strong>
-              <span class="text-black-50">&nbsp;( ARRAY ):&nbsp;</span>[
-              <span class="ps-3" th:each="decoded, idx: ${record.decoded}">
+        <div data-bs-spy="scroll" data-bs-offset="0" class="scrollspy-example" data-bs-target="#navbar-example2"
+             tabindex="0">
+          <div th:id="${'collapse' + record.key}" class="accordion-collapse collapse"
+               th:aria-labelledby="${'heading' + record.key}" data-bs-parent="#accordionRecords">
+            <div class="accordion-body">
+              <div>
+                <strong class="text-success">Access_Token</strong>
+                <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+                <label th:text="${record.accessToken}"></label>
+              </div>
+              <div>
+                <strong class="text-success">Refresh_Token</strong>
+                <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+                <label th:text="${record.refreshToken}"></label>
+              </div>
+              <div>
+                <strong class="text-success">Jti</strong>
+                <span class="text-black-50">&nbsp;( INTEGER ):&nbsp;</span>
+                <label th:text="${record.jti}"></label>
+              </div>
+              <div>
+                <strong class="text-success">Created_At</strong>
+                <span class="text-black-50">&nbsp;( DATE_TIME ):&nbsp;</span>
+                <label th:text="${record.createdAt}"></label>
+              </div>
+              <div>
+                <strong class="text-success">Scope</strong>
+                <span class="text-black-50">&nbsp;( STRING ):&nbsp;</span>
+                <label th:text="${record.scope}"></label>
+              </div>
+              <div>
+                <strong class="text-success">Expires</strong>
+                <span class="text-black-50">&nbsp;( INTEGER ):&nbsp;</span>
+                <label th:text="${record.expires}"></label>
+              </div>
+              <div>
+                <strong class="text-success">Decoded</strong>
+                <span class="text-black-50">&nbsp;( ARRAY ):&nbsp;</span>[
+                <span class="ps-3" th:each="decoded, idx: ${record.decoded}">
                 <div>{</div>
                 <div class="ps-3">
                   <strong class="text-danger">Login</strong>
@@ -166,6 +168,7 @@
               <span th:if="${idx.last}" th:text="${']'}"></span>
               <span th:if="${!idx.last}" th:text="${','}"></span>
               </span>
+              </div>
             </div>
           </div>
         </div>
@@ -174,16 +177,52 @@
     <div th:if="${totalPages > 1}" class="text-center m-1">
       <span>стр. [[${currentPage + 1}]] из [[${totalPages}]]. Всего записей [[${totalElements}]]</span>
     </div>
-    <nav th:if="${totalPages > 1}" aria-label="Page navigation example" th:with="pageUri = '?page=' + ${currentPage} + '&pageSize=' + ${pageSize}">
+    <nav th:if="${totalPages > 1}" aria-label="Page navigation example"
+         th:with="pageUri = '?page=' + ${currentPage} + '&pageSize=' + ${pageSize}">
       <ul class="pagination justify-content-center">
         <li th:class="${currentPage > 0 ? 'page-item' : 'page-item disabled'}">
-          <a class="page-link" th:href="@{/records(page=${0},pageSize=${pageSize})}">Предыдущий</a>
+          <a class="page-link" th:href="@{/records(page=${0},pageSize=${pageSize})}">Начало</a>
         </li>
-        <li th:class="${currentPage==status.index} ? 'page-item active' : 'page-item'" th:each="page, status: ${#numbers.sequence(1, totalPages)}">
-          <a th:href="@{/records(page=${status.index},pageSize=${pageSize})}" class="page-link" href="#" th:text="${status.count}"></a>
-        </li>
-        <li th:class="${currentPage + 1 < totalPages ? 'page-item' : 'page-item disabled'}">
-          <a class="page-link" th:href="@{/records(page=${totalPages - 1},pageSize=${pageSize})}">Следующий</a>
+        <th:block th:if="${totalPages <= 10}">
+          <li th:class="${currentPage != page} ? 'page-item' : 'page-item active'"
+              th:each="page : ${#numbers.sequence(1, totalPages)}">
+            <a th:href="@{/records(page=${page},pageSize=${pageSize})}" class="page-link" href="#"
+               th:text="${page}"></a>
+          </li>
+        </th:block>
+        <th:block th:if="${totalPages > 10}">
+          <th:block th:if="${currentPage <= 5 || currentPage > totalPages - 4}">
+            <li th:class="${currentPage==status.index} ? 'page-item active' : 'page-item'"
+                th:each="page, status: ${#numbers.sequence(1, 5)}">
+              <a th:href="@{/records(page=${status.index},pageSize=${pageSize})}" class="page-link" href="#"
+                 th:text="${status.count}"></a>
+            </li>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">...</a>
+            </li>
+            <li th:class="${currentPage != page} ? 'page-item' : 'page-item active'"
+                th:each="page : ${#numbers.sequence(totalPages - 5, totalPages - 1)}">
+              <a th:href="@{/records(page=${page},pageSize=${pageSize})}" class="page-link" href="#"
+                 th:text="${page + 1}"></a>
+            </li>
+          </th:block>
+          <th:block th:if="${currentPage > 5 && currentPage < totalPages - 4}">
+            <li class="page-item disabled">
+              <a class="page-link" href="#">...</a>
+            </li>
+            <li th:class="${currentPage != page} ? 'page-item' : 'page-item active'"
+                th:each="page : ${#numbers.sequence(currentPage - 4, currentPage + 3)}">
+              <a th:href="@{/records(page=${page},pageSize=${pageSize})}" class="page-link" href="#"
+                 th:text="${page + 1}"></a>
+            </li>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">...</a>
+            </li>
+          </th:block>
+
+        </th:block>
+        <li th:class="${currentPage < totalPages - 1 ? 'page-item' : 'page-item disabled'}">
+          <a class="page-link" th:href="@{/records(page=${totalPages - 1},pageSize=${pageSize})}">Конец</a>
         </li>
       </ul>
     </nav>
